@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+
+<div id="root">
+    <h2>这是子组件传过来的内容：{{messageDemo}}</h2>
+    <student name="张三" @childfn="transContent"></student>
+</div>
+
+
+<script>
+
+    const student = Vue.extend({
+        template:
+            `
+              <div style="border: 1px solid red">
+                    <h2>这是父组件传来的学生姓名：{{name}}</h2>
+                    <button @click="myClick">点我向父组件传值</button>
+              </div>
+            `,
+        data() {
+            return {
+                msg: '我是山传学生'
+            }
+        },
+        methods: {
+            myClick() {
+                // console.log(this)
+                this.$emit('childfn', this.msg);
+            }
+        },
+        props: ['name']
+    })
+
+    let vm = new Vue({
+
+        el: "#root",
+        data: {
+            messageDemo: ''
+        },
+        components: {
+            student
+        },
+        methods: {
+            transContent(transData) {
+                this.messageDemo = transData;
+            }
+        }
+
+    })
+
+</script>
+
+</body>
+</html>
